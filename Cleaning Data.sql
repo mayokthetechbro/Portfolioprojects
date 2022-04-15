@@ -1,14 +1,15 @@
 
---Cleaning Data in SQL Queries
+------------------------------------SQL QUERIES I USED TO CLEAN THE HOUSING DATA--------------------------------
 
-
+--------------------------------------------------------------------------------------------------------------------------
+--LOOKING AT THE DATASET
 
 Select *
 From Nashville_Housing
 
 --------------------------------------------------------------------------------------------------------------------------
 
--- Standardize Date Format
+-- THE DATE FORMAT WAS INCONSISTENT SO I DECIDED TO STANDARDIZE THE DATE FORMAT
 
 
 Select saleDate, CONVERT(Date,SaleDate)
@@ -29,11 +30,10 @@ SET SaleDateConverted = CONVERT(Date,SaleDate)
 
  --------------------------------------------------------------------------------------------------------------------------
 
--- Populate Property Address data
+-- I DECIDED TO POPULATE THE PROPERTY ADDRESS DATA TO MAKE SURE I WAS NOT MISSING ANY VALUES 
 
 Select *
 From Nashville_Housing
---Where PropertyAddress is null
 order by ParcelID
 
 
@@ -54,12 +54,10 @@ JOIN Nashville_Housing b
 	AND a.[UniqueID ] <> b.[UniqueID ]
 Where a.PropertyAddress is null
 
-
-
-
 --------------------------------------------------------------------------------------------------------------------------
 
--- Breaking out Address into Individual Columns (Address, City, State)
+
+-- THE ADDRESS COLUMN WAS CROWDED AND DIFFICULT TO READ SO I BROKE IT DOWN INTO INDIVIDUAL COLUMNS (Address, City, State)
 
 
 Select PropertyAddress
@@ -70,7 +68,6 @@ From Nashville_Housing
 SELECT
 SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) -1 ) as Address
 , SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) + 1 , LEN(PropertyAddress)) as Address
-
 From Nashville_Housing
 
 
@@ -95,7 +92,7 @@ From Nashville_Housing
 
 
 
-
+-----ALTERNATE WAY TO BREAK A COLUMN INTO SEPARATE COLUMNS
 
 Select OwnerAddress
 From Nashville_Housing
@@ -141,7 +138,7 @@ From Nashville_Housing
 --------------------------------------------------------------------------------------------------------------------------
 
 
--- Change Y and N to Yes and No in "Sold as Vacant" field
+-- CHANGING "Y" and "N" to ""Yes" and "No" in "Sold as Vacant" field
 
 
 Select Distinct(SoldAsVacant), Count(SoldAsVacant)
@@ -173,7 +170,7 @@ SET SoldAsVacant = CASE When SoldAsVacant = 'Y' THEN 'Yes'
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
--- Remove Duplicates
+-- REMOVING DUPLICATES FROM THE DATASET
 
 WITH RowNumCTE AS(
 Select *,
@@ -204,9 +201,7 @@ From Nashville_Housing
 
 ---------------------------------------------------------------------------------------------------------
 
--- Delete Unused Columns
-
-
+-- DELETING UNUSED COLUMNS
 
 Select *
 From Nashville_Housing
